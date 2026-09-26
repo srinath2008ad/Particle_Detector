@@ -1,4 +1,5 @@
 const r = require("raylib");
+const geometry = require("./geometry")
 
 const WINDOW_WIDTH = 1200;
 const WINDOW_HEIGHT = 600;
@@ -8,8 +9,9 @@ let scannerPosX = 0;
 const scannerPosY = 0;
 const scannerRange = 50;
 const scannerHeight = WINDOW_HEIGHT;
+let scannerColor = r.WHITE;
 
-const particlePosX = 300;
+let particlePosX = 300;
 const particlePosY = 0;
 const particleRange = 100;
 const particleheight = WINDOW_HEIGHT;
@@ -27,6 +29,13 @@ function setup() {
 }
 
 function update() {
+    if (geometry.isScannerOverlapping(scannerPosX, scannerRange, particlePosX, particleRange)) {
+        scannerColor = r.RED;
+    }
+    else {
+        scannerColor = r.WHITE;
+    }
+
     if (directionForward) {
         scannerPosX = scannerPosX + 3;
     }
@@ -34,7 +43,7 @@ function update() {
         scannerPosX = scannerPosX - 3;
     }
 
-    if (scannerPosX + scannerRange > 1200) {
+    if (scannerPosX + scannerRange > WINDOW_WIDTH) {
         directionBackward = true
         directionForward = false
     }
@@ -51,10 +60,10 @@ function draw() {
     r.ClearBackground(r.BLACK);
 
     //particle
-    r.DrawRectangle(particlePosX,particlePosY,particleRange,particleheight,r.BLUE);
-    
+    r.DrawRectangle(particlePosX, particlePosY, particleRange, particleheight, r.BLUE);
+
     //scanner
-    r.DrawRectangle(scannerPosX, scannerPosY, scannerRange, scannerHeight, r.WHITE);
+    r.DrawRectangle(scannerPosX, scannerPosY, scannerRange, scannerHeight, scannerColor);
 
     r.EndDrawing();
 }
