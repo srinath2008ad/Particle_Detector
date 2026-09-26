@@ -19,19 +19,33 @@ const scanner2Height = WINDOW_HEIGHT;
 let scanner2Color = r.WHITE;
 const scanner2Speed = 3;
 
-let particle1PosX = 300;
+const scanner3PosX = 0;
+let scanner3PosY = 0;
+const scanner3Range = 50;
+const scanner3width = WINDOW_WIDTH;
+let scanner3Color = r.WHITE;
+const scanner3Speed = 5;
+
+const particle1PosX = 200;
 const particle1PosY = 0;
-const particle1Range = 500;
+const particle1Range = 400;
 const particle1height = WINDOW_HEIGHT;
 
-let particle2PosX = 1000;
+const particle2PosX = 1000;
 const particle2PosY = 0;
 const particle2Range = 100;
 const particle2height = WINDOW_HEIGHT;
 
+const particle3PosX = 0;
+const particle3PosY = 300;
+const particle3Range = 100;
+const particle3width = WINDOW_WIDTH;
+
 let scanner1Forward = true;
 
 let scanner2Forward = true;
+
+let scanner3Downward = true;
 
 function running() {
     return !r.WindowShouldClose();
@@ -45,10 +59,14 @@ function setup() {
 function update() {
 
     //Scanner 1 color
-    scanner1Color = functions.isScannerOverlapping(scanner1PosX, scanner1Range, particle1PosX, particle1Range)?r.RED:r.WHITE;
+    scanner1Color = functions.isScannerOverlapping(scanner1PosX, scanner1Range, particle1PosX, particle1Range) ? r.RED : r.WHITE;
 
     //Scanner 2 color
     scanner2Color = functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle1PosX, particle1Range) || functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle2PosX, particle2Range) ? r.RED : r.WHITE;
+
+    //scanner 3 color
+
+    scanner3Color = functions.isScannerOverlapping(scanner3PosY, scanner1Range, particle3PosY, particle3Range) ? r.RED : r.WHITE;
 
     //scanner1 postioning logic
 
@@ -72,6 +90,19 @@ function update() {
     else if (scanner2PosX < WINDOW_WIDTH / 2) {
         scanner2Forward = true;
     }
+
+    //scanner3 positioning logic
+
+    scanner3PosY = functions.scannerPostioning(scanner3Downward, scanner3Speed, scanner3PosY)
+
+    if (scanner3PosY + scanner3Range > WINDOW_HEIGHT) {
+        scanner3Downward = false
+    }
+
+    else if (scanner3PosY < 0) {
+        scanner3Downward = true;
+    }
+
 }
 
 function draw() {
@@ -85,11 +116,17 @@ function draw() {
     //particle2
     r.DrawRectangle(particle2PosX, particle2PosY, particle2Range, particle2height, r.BLUE);
 
+    //particle3
+    r.DrawRectangle(particle3PosX, particle3PosY, particle3width, particle3Range, r.BLUE);
+
     //scanner1
     r.DrawRectangle(scanner1PosX, scanner1PosY, scanner1Range, scanner1Height, scanner1Color);
 
     //scanner2
     r.DrawRectangle(scanner2PosX, scanner2PosY, scanner2Range, scanner2Height, scanner2Color);
+
+    //scanner3
+    r.DrawRectangle(scanner3PosX, scanner3PosY, scanner3width, scanner3Range, scanner3Color);
 
     r.EndDrawing();
 }
