@@ -11,6 +11,12 @@ const scannerRange = 50;
 const scannerHeight = WINDOW_HEIGHT;
 let scannerColor = r.WHITE;
 
+let scanner2PosX = scannerPosX + 600;
+const scanner2PosY = 0;
+const scanner2Range = 50;
+const scanner2Height = WINDOW_HEIGHT;
+let scanner2Color = r.WHITE;
+
 let particle1PosX = 300;
 const particle1PosY = 0;
 const particle1Range = 100;
@@ -49,7 +55,7 @@ function update() {
         scannerPosX = scannerPosX - 3;
     }
 
-    if (scannerPosX + scannerRange > WINDOW_WIDTH) {
+    if (scannerPosX + scannerRange > WINDOW_WIDTH/2) {
         directionBackward = true
         directionForward = false
     }
@@ -73,6 +79,7 @@ function draw() {
 
     //scanner
     r.DrawRectangle(scannerPosX, scannerPosY, scannerRange, scannerHeight, scannerColor);
+    r.DrawRectangle(scanner2PosX, scanner2PosY, scanner2Range, scanner2Height, scannerColor);
 
     r.EndDrawing();
 }
