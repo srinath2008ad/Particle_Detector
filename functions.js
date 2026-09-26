@@ -27,12 +27,7 @@ function scannerPostioning(forward,speed,scannerPosX){
     }
 }
 
-function ScannerColor(scannerPosX,scannerRange,particlePosX,particleRange){
-    return isScannerOverlapping(scannerPosX,scannerRange,particlePosX,particleRange)?r.RED:r.WHITE;
-}
-
 module.exports = {
     isScannerOverlapping,
-    scannerPostioning,
-    ScannerColor
+    scannerPostioning
 }
