@@ -1,21 +1,23 @@
 const r = require("raylib");
-const geometry = require("./geometry")
+const functions = require("./functions")
 
 const WINDOW_WIDTH = 1200;
 const WINDOW_HEIGHT = 600;
 const targetFps = 90;
 
-let scannerPosX = 0;
-const scannerPosY = 0;
-const scannerRange = 50;
-const scannerHeight = WINDOW_HEIGHT;
-let scannerColor = r.WHITE;
+let scanner1PosX = 0;
+const scanner1PosY = 0;
+const scanner1Range = 50;
+const scanner1Height = WINDOW_HEIGHT;
+let scanner1Color = r.WHITE;
+const scanner1Speed = 5;
 
-let scanner2PosX = scannerPosX + 600;
+let scanner2PosX = scanner1PosX + 600;
 const scanner2PosY = 0;
 const scanner2Range = 50;
 const scanner2Height = WINDOW_HEIGHT;
 let scanner2Color = r.WHITE;
+const scanner2Speed = 3;
 
 let particle1PosX = 300;
 const particle1PosY = 0;
@@ -27,8 +29,11 @@ const particle2PosY = 0;
 const particle2Range = 30;
 const particle2height = WINDOW_HEIGHT;
 
-let directionForward = true;
-let directionBackward = false;
+let scanner1Forward = true;
+let scanner1Backward = false;
+
+let scanner2Forward = true;
+// let scanner2Backward = false;
 
 function running() {
     return !r.WindowShouldClose();
@@ -40,29 +45,34 @@ function setup() {
 }
 
 function update() {
-    if (geometry.isScannerOverlapping(scannerPosX, scannerRange, particle1PosX, particle1Range) ||
-        geometry.isScannerOverlapping(scannerPosX, scannerRange, particle2PosX, particle2Range)) {
-        scannerColor = r.RED;
+    
+    //Scanner 1 color
+    scanner1Color = functions.ScannerColor(scanner1PosX,scanner1Range,particle1PosX,particle1Range);
+    
+    //Scanner 2 color
+    scanner2Color = functions.ScannerColor(scanner2PosX,scanner2Range,particle2PosX,particle2Range);
+    
+    //scanner1 postioning logic
+    
+    scanner1PosX = functions.scannerPostioning(scanner1Forward,scanner1Speed,scanner1PosX)
+    
+    if (scanner1PosX + scanner1Range > WINDOW_WIDTH/2) {
+        scanner1Forward = false
     }
-    else {
-        scannerColor = r.WHITE;
-    }
-
-    if (directionForward) {
-        scannerPosX = scannerPosX + 3;
-    }
-    else if (directionBackward) {
-        scannerPosX = scannerPosX - 3;
-    }
-
-    if (scannerPosX + scannerRange > WINDOW_WIDTH/2) {
-        directionBackward = true
-        directionForward = false
+    else if (scanner1PosX < 0) {
+        scanner1Forward = true;
     }
 
-    if (scannerPosX < 0) {
-        directionForward = true;
-        directionBackward = false;
+    //scanner2 postioning logic
+
+    scanner2PosX = functions.scannerPostioning(scanner2Forward,scanner2Speed,scanner2PosX)
+
+    if (scanner2PosX + scanner2Range > WINDOW_WIDTH) {
+        scanner2Forward = false
+    }
+
+    else if (scanner2PosX < WINDOW_WIDTH/2) {
+        scanner2Forward = true;
     }
 }
 
@@ -77,9 +87,11 @@ function draw() {
     //particle2
     r.DrawRectangle(particle2PosX, particle2PosY, particle2Range, particle2height, r.BLUE);
 
-    //scanner
-    r.DrawRectangle(scannerPosX, scannerPosY, scannerRange, scannerHeight, scannerColor);
-    r.DrawRectangle(scanner2PosX, scanner2PosY, scanner2Range, scanner2Height, scannerColor);
+    //scanner1
+    r.DrawRectangle(scanner1PosX, scanner1PosY, scanner1Range, scanner1Height, scanner1Color);
+
+    //scanner2
+    r.DrawRectangle(scanner2PosX, scanner2PosY, scanner2Range, scanner2Height, scanner2Color);
 
     r.EndDrawing();
 }
