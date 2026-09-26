@@ -11,10 +11,15 @@ const scannerRange = 50;
 const scannerHeight = WINDOW_HEIGHT;
 let scannerColor = r.WHITE;
 
-let particlePosX = 300;
-const particlePosY = 0;
-const particleRange = 100;
-const particleheight = WINDOW_HEIGHT;
+let particle1PosX = 300;
+const particle1PosY = 0;
+const particle1Range = 100;
+const particle1height = WINDOW_HEIGHT;
+
+let particle2PosX = 700;
+const particle2PosY = 0;
+const particle2Range = 30;
+const particle2height = WINDOW_HEIGHT;
 
 let directionForward = true;
 let directionBackward = false;
@@ -29,7 +34,8 @@ function setup() {
 }
 
 function update() {
-    if (geometry.isScannerOverlapping(scannerPosX, scannerRange, particlePosX, particleRange)) {
+    if (geometry.isScannerOverlapping(scannerPosX, scannerRange, particle1PosX, particle1Range) ||
+        geometry.isScannerOverlapping(scannerPosX, scannerRange, particle2PosX, particle2Range)) {
         scannerColor = r.RED;
     }
     else {
@@ -59,8 +65,11 @@ function draw() {
 
     r.ClearBackground(r.BLACK);
 
-    //particle
-    r.DrawRectangle(particlePosX, particlePosY, particleRange, particleheight, r.BLUE);
+    //particle1
+    r.DrawRectangle(particle1PosX, particle1PosY, particle1Range, particle1height, r.BLUE);
+
+    //particle2
+    r.DrawRectangle(particle2PosX, particle2PosY, particle2Range, particle2height, r.BLUE);
 
     //scanner
     r.DrawRectangle(scannerPosX, scannerPosY, scannerRange, scannerHeight, scannerColor);
