@@ -10,21 +10,21 @@ const scanner1PosY = 0;
 const scanner1Range = 100;
 const scanner1Height = WINDOW_HEIGHT;
 let scanner1Color = r.WHITE;
-const scanner1Speed = 1;
+const scanner1Speed = 3;
 
 let scanner2PosX = scanner1PosX + (WINDOW_WIDTH / 2);
 const scanner2PosY = 0;
 const scanner2Range = 100;
 const scanner2Height = WINDOW_HEIGHT;
 let scanner2Color = r.WHITE;
-const scanner2Speed = 2;
+const scanner2Speed = 5;
 
 const scanner3PosX = 0;
 let scanner3PosY = 0;
 const scanner3Range = 50;
 const scanner3width = WINDOW_WIDTH;
 let scanner3Color = r.WHITE;
-const scanner3Speed = 1;
+const scanner3Speed = 5;
 
 const particle1PosX = 100;
 const particle1PosY = 0;
@@ -79,36 +79,27 @@ function update() {
 
     scanner1PosX = functions.scannerPostioning(scanner1Forward, scanner1Speed, scanner1PosX)
 
-    if (scanner1PosX + scanner1Range > WINDOW_WIDTH / 2) {
-        scanner1Forward = false
-    }
-    else if (scanner1PosX < 0) {
-        scanner1Forward = true;
-    }
+    scanner1Forward = functions.scannerBoundaries(scanner1PosX, scanner1Range, 0, WINDOW_WIDTH / 2, scanner1Forward)
 
     //scanner2 postioning logic
 
     scanner2PosX = functions.scannerPostioning(scanner2Forward, scanner2Speed, scanner2PosX)
 
-    if (scanner2PosX + scanner2Range > WINDOW_WIDTH) {
-        scanner2Forward = false
-    }
-
-    else if (scanner2PosX < WINDOW_WIDTH / 2) {
-        scanner2Forward = true;
-    }
+    scanner2Forward = functions.scannerBoundaries(scanner2PosX, scanner2Range, WINDOW_WIDTH / 2, WINDOW_WIDTH, scanner2Forward)
 
     //scanner3 positioning logic
 
     scanner3PosY = functions.scannerPostioning(scanner3Downward, scanner3Speed, scanner3PosY)
 
-    if (scanner3PosY + scanner3Range > WINDOW_HEIGHT) {
-        scanner3Downward = false
-    }
+    // if (scanner3PosY + scanner3Range > WINDOW_HEIGHT) {
+    //     scanner3Downward = false
+    // }
 
-    else if (scanner3PosY < 0) {
-        scanner3Downward = true;
-    }
+    // else if (scanner3PosY < 0) {
+    //     scanner3Downward = true;
+    // }
+
+    scanner3Downward = functions.scannerBoundaries(scanner3PosY, scanner3Range, 0, WINDOW_HEIGHT, scanner3Downward)
 
 }
 

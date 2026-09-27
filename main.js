@@ -7,10 +7,10 @@ function loop() {
     }
 }
 
-function main(){
+function main() {
     sketch.setup();
     loop();
-    sketch.Teardown();
+    sketch.teardown();
 }
 
 main();

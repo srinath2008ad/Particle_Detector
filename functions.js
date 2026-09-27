@@ -26,11 +26,14 @@ function scannerPostioning(forward, speed, scannerPosX) {
 }
 
 function scannerBoundaries(scannerPosX, scannerRange, boundary1, boundary2, forward) {
-    if (forward && (scannerPosX + scannerRange > boundary2)) {
+    if(scannerPosX < boundary1){
+        return true
+    }
+    else if(scannerPosX + scannerRange > boundary2){
         return false
     }
-    else if (!forward && (scannerPosX === boundary1)) {
-        return true
+    else{
+        return forward
     }
 }
 
