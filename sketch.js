@@ -7,38 +7,38 @@ const targetFps = 90;
 
 let scanner1PosX = 0;
 const scanner1PosY = 0;
-const scanner1Range = 50;
+const scanner1Range = 100;
 const scanner1Height = WINDOW_HEIGHT;
 let scanner1Color = r.WHITE;
-const scanner1Speed = 5;
+const scanner1Speed = 1;
 
 let scanner2PosX = scanner1PosX + (WINDOW_WIDTH / 2);
 const scanner2PosY = 0;
-const scanner2Range = 50;
+const scanner2Range = 100;
 const scanner2Height = WINDOW_HEIGHT;
 let scanner2Color = r.WHITE;
-const scanner2Speed = 3;
+const scanner2Speed = 2;
 
 const scanner3PosX = 0;
 let scanner3PosY = 0;
 const scanner3Range = 50;
 const scanner3width = WINDOW_WIDTH;
 let scanner3Color = r.WHITE;
-const scanner3Speed = 5;
+const scanner3Speed = 1;
 
-const particle1PosX = 200;
+const particle1PosX = 100;
 const particle1PosY = 0;
-const particle1Range = 400;
+const particle1Range = 10;
 const particle1height = WINDOW_HEIGHT;
 
 const particle2PosX = 1000;
 const particle2PosY = 0;
-const particle2Range = 100;
+const particle2Range = 10;
 const particle2height = WINDOW_HEIGHT;
 
 const particle3PosX = 0;
-const particle3PosY = 300;
-const particle3Range = 100;
+const particle3PosY = 100;
+const particle3Range = 10;
 const particle3width = WINDOW_WIDTH;
 
 let scanner1Forward = true;
@@ -57,16 +57,23 @@ function setup() {
 }
 
 function update() {
+    let particle1Detected = false, particle2Detected = false;
 
     //Scanner 1 color
     scanner1Color = functions.isScannerOverlapping(scanner1PosX, scanner1Range, particle1PosX, particle1Range) ? r.RED : r.WHITE;
 
     //Scanner 2 color
-    scanner2Color = functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle1PosX, particle1Range) || functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle2PosX, particle2Range) ? r.RED : r.WHITE;
+
+    particle1Detected = functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle1PosX, particle1Range)
+
+    particle2Detected = functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle2PosX, particle2Range);
+
+    scanner2Color = particle1Detected || particle2Detected ? r.RED : r.WHITE;
 
     //scanner 3 color
 
-    scanner3Color = functions.isScannerOverlapping(scanner3PosY, scanner1Range, particle3PosY, particle3Range) ? r.RED : r.WHITE;
+    scanner3Color = functions.isScannerOverlapping(scanner3PosY, scanner3Range, particle3PosY, particle3Range) ? r.RED : r.WHITE;
+
 
     //scanner1 postioning logic
 

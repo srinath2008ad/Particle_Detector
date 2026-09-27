@@ -8,7 +8,7 @@ function Distance(x1, y1, x2, y2) {
 
 function add(x, y) {
     return x + y;
-}
+}   
 
 function isScannerOverlapping(scannerPosX, scannerRange, particlePosX, particleRange) {
     if (add(scannerPosX, scannerRange) >= particlePosX && scannerPosX <= add(particlePosX, particleRange)) {
@@ -25,12 +25,12 @@ function scannerPostioning(forward, speed, scannerPosX) {
     }
 }
 
-function scannerBoundaries(scannerPosX, scannerRange, boundary1, boundary2) {
-    if (scannerPosX + scannerRange > boundary2) {
+function scannerBoundaries(scannerPosX, scannerRange, boundary1, boundary2, forward) {
+    if (forward && (scannerPosX + scannerRange > boundary2)) {
         return false
     }
-    else if (scannerPosX < boundary1) {
-        return true;
+    else if (!forward && (scannerPosX === boundary1)) {
+        return true
     }
 }
 
