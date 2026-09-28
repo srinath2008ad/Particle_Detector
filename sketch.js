@@ -23,11 +23,11 @@ function running() {
 
 function update() {
 
-    s1.Activate = functions.chooseColor(s1.PosX, s1.Range, p1.PosX, p1.Range, p2.PosX, p2.Range)
+    s1.Color = functions.chooseColor(s1.PosX, s1.Range, p1.PosX, p1.Range, p2.PosX, p2.Range)
 
-    s2.Activate = functions.chooseColor(s2.PosX, s2.Range, p1.PosX, p1.Range, p2.PosX, p2.Range)
+    s2.Color = functions.chooseColor(s2.PosX, s2.Range, p1.PosX, p1.Range, p2.PosX, p2.Range)
 
-    s3.Activate = functions.isScannerOverlapping(s3.PosY, s3.Range, p3.PosY, p3.Range);
+    s3.Color = functions.isScannerOverlapping(s3.PosY, s3.Range, p3.PosY, p3.Range);
 
 
     s1.PosX = functions.updateScannerPostion(s1.Speed, s1.PosX)
@@ -43,7 +43,7 @@ function update() {
     s3.PosY = functions.updateScannerPostion(s3.Speed, s3.PosY)
 
     s3.Speed = functions.isScannerWithinBoundaries(s3.PosY, s3.Range, 0, screen.WINDOW_HEIGHT, s3.Speed) ? s3.Speed : -s3.Speed
-    
+
 }
 
 function createHorizontalRange(PosY, range, color) {
@@ -67,11 +67,11 @@ function draw() {
     createHorizontalRange(p3.PosY, p3.Range, r.SKYBLUE)
 
 
-    createVerticalRange(s1.PosX, s1.Range, s1.Activate ? r.RED : r.WHITE)
+    createVerticalRange(s1.PosX, s1.Range, s1.Color ? r.RED : r.WHITE)
 
-    createVerticalRange(s2.PosX, s2.Range, s2.Activate ? r.RED : r.WHITE)
+    createVerticalRange(s2.PosX, s2.Range, s2.Color ? r.RED : r.WHITE)
 
-    createHorizontalRange(s3.PosY, s3.Range, s3.Activate ? r.RED : r.WHITE)
+    createHorizontalRange(s3.PosY, s3.Range, s3.Color ? r.RED : r.WHITE)
 
     r.EndDrawing();
 }

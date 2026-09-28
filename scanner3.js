@@ -2,7 +2,7 @@ const PosX = 0;
 let PosY = 0;
 const Range = 50;
 const width = 1200;
-let Activate;
+let Color;
 let Speed = 5;
 
 module.exports = {
@@ -10,6 +10,6 @@ module.exports = {
     PosY,
     Range,
     width,
-    Activate,
+    Color,
     Speed
 }
