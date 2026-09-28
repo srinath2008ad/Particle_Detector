@@ -1,130 +1,77 @@
 const r = require("raylib");
-const functions = require("./functions")
+const functions = require("./scanner")
 
-const WINDOW_WIDTH = 1200;
-const WINDOW_HEIGHT = 600;
-const targetFps = 90;
+let s1 = require("./scanner1");
+let s2 = require("./scanner2");
+let s3 = require("./scanner3");
 
-let scanner1PosX = 0;
-const scanner1PosY = 0;
-const scanner1Range = 100;
-const scanner1Height = WINDOW_HEIGHT;
-let scanner1Color = r.WHITE;
-const scanner1Speed = 3;
+let p1 = require("./particle1");
+let p2 = require("./particle2");
+let p3 = require("./particle3");
 
-let scanner2PosX = scanner1PosX + (WINDOW_WIDTH / 2);
-const scanner2PosY = 0;
-const scanner2Range = 100;
-const scanner2Height = WINDOW_HEIGHT;
-let scanner2Color = r.WHITE;
-const scanner2Speed = 5;
+const screen = require("./screen");
 
-const scanner3PosX = 0;
-let scanner3PosY = 0;
-const scanner3Range = 50;
-const scanner3width = WINDOW_WIDTH;
-let scanner3Color = r.WHITE;
-const scanner3Speed = 5;
-
-const particle1PosX = 100;
-const particle1PosY = 0;
-const particle1Range = 10;
-const particle1height = WINDOW_HEIGHT;
-
-const particle2PosX = 1000;
-const particle2PosY = 0;
-const particle2Range = 10;
-const particle2height = WINDOW_HEIGHT;
-
-const particle3PosX = 0;
-const particle3PosY = 100;
-const particle3Range = 10;
-const particle3width = WINDOW_WIDTH;
-
-let scanner1Forward = true;
-
-let scanner2Forward = true;
-
-let scanner3Downward = true;
+function setup() {
+    r.InitWindow(screen.WINDOW_WIDTH, screen.WINDOW_HEIGHT, "Particle_Detector");
+    r.SetTargetFPS(screen.FPS);
+    r.SetTraceLogLevel(r.LOG_NONE);
+}
 
 function running() {
     return !r.WindowShouldClose();
 }
 
-function setup() {
-    r.InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Particle_Detector");
-    r.SetTargetFPS(targetFps);
+function update() {
+
+    s1.Activate = functions.chooseColor(s1.PosX, s1.Range, p1.PosX, p1.Range, p2.PosX, p2.Range)
+
+    s2.Activate = functions.chooseColor(s2.PosX, s2.Range, p1.PosX, p1.Range, p2.PosX, p2.Range)
+
+    s3.Activate = functions.isScannerOverlapping(s3.PosY, s3.Range, p3.PosY, p3.Range);
+
+
+    s1.PosX = functions.updateScannerPostion(s1.Speed, s1.PosX)
+
+    s1.Speed = functions.isScannerWithinBoundaries(s1.PosX, s1.Range, 0, screen.WINDOW_WIDTH / 2) ? s1.Speed : -s1.Speed
+
+
+    s2.PosX = functions.updateScannerPostion(s2.Speed, s2.PosX)
+
+    s2.Speed = functions.isScannerWithinBoundaries(s2.PosX, s2.Range, screen.WINDOW_WIDTH / 2, screen.WINDOW_WIDTH, s2.Speed) ? s2.Speed : -s2.Speed
+
+
+    s3.PosY = functions.updateScannerPostion(s3.Speed, s3.PosY)
+
+    s3.Speed = functions.isScannerWithinBoundaries(s3.PosY, s3.Range, 0, screen.WINDOW_HEIGHT, s3.Speed) ? s3.Speed : -s3.Speed
+    
 }
 
-function update() {
-    let particle1Detected = false, particle2Detected = false;
+function createHorizontalRange(PosY, range, color) {
+    r.DrawRectangle(0, PosY, screen.WINDOW_WIDTH, range, color);
+}
 
-    //Scanner 1 color
-    scanner1Color = functions.isScannerOverlapping(scanner1PosX, scanner1Range, particle1PosX, particle1Range) ? r.RED : r.WHITE;
-
-    //Scanner 2 color
-
-    particle1Detected = functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle1PosX, particle1Range)
-
-    particle2Detected = functions.isScannerOverlapping(scanner2PosX, scanner2Range, particle2PosX, particle2Range);
-
-    scanner2Color = particle1Detected || particle2Detected ? r.RED : r.WHITE;
-
-    //scanner 3 color
-
-    scanner3Color = functions.isScannerOverlapping(scanner3PosY, scanner3Range, particle3PosY, particle3Range) ? r.RED : r.WHITE;
-
-
-    //scanner1 postioning logic
-
-    scanner1PosX = functions.scannerPostioning(scanner1Forward, scanner1Speed, scanner1PosX)
-
-    scanner1Forward = functions.scannerBoundaries(scanner1PosX, scanner1Range, 0, WINDOW_WIDTH / 2, scanner1Forward)
-
-    //scanner2 postioning logic
-
-    scanner2PosX = functions.scannerPostioning(scanner2Forward, scanner2Speed, scanner2PosX)
-
-    scanner2Forward = functions.scannerBoundaries(scanner2PosX, scanner2Range, WINDOW_WIDTH / 2, WINDOW_WIDTH, scanner2Forward)
-
-    //scanner3 positioning logic
-
-    scanner3PosY = functions.scannerPostioning(scanner3Downward, scanner3Speed, scanner3PosY)
-
-    // if (scanner3PosY + scanner3Range > WINDOW_HEIGHT) {
-    //     scanner3Downward = false
-    // }
-
-    // else if (scanner3PosY < 0) {
-    //     scanner3Downward = true;
-    // }
-
-    scanner3Downward = functions.scannerBoundaries(scanner3PosY, scanner3Range, 0, WINDOW_HEIGHT, scanner3Downward)
-
+function createVerticalRange(PosX, range, color) {
+    r.DrawRectangle(PosX, 0, range, screen.WINDOW_HEIGHT, color);
 }
 
 function draw() {
+
     r.BeginDrawing();
 
     r.ClearBackground(r.BLACK);
 
-    //particle1
-    r.DrawRectangle(particle1PosX, particle1PosY, particle1Range, particle1height, r.BLUE);
+    createVerticalRange(p1.PosX, p1.Range, r.SKYBLUE)
 
-    //particle2
-    r.DrawRectangle(particle2PosX, particle2PosY, particle2Range, particle2height, r.BLUE);
+    createVerticalRange(p2.PosX, p2.Range, r.SKYBLUE)
 
-    //particle3
-    r.DrawRectangle(particle3PosX, particle3PosY, particle3width, particle3Range, r.BLUE);
+    createHorizontalRange(p3.PosY, p3.Range, r.SKYBLUE)
 
-    //scanner1
-    r.DrawRectangle(scanner1PosX, scanner1PosY, scanner1Range, scanner1Height, scanner1Color);
 
-    //scanner2
-    r.DrawRectangle(scanner2PosX, scanner2PosY, scanner2Range, scanner2Height, scanner2Color);
+    createVerticalRange(s1.PosX, s1.Range, s1.Activate ? r.RED : r.WHITE)
 
-    //scanner3
-    r.DrawRectangle(scanner3PosX, scanner3PosY, scanner3width, scanner3Range, scanner3Color);
+    createVerticalRange(s2.PosX, s2.Range, s2.Activate ? r.RED : r.WHITE)
+
+    createHorizontalRange(s3.PosY, s3.Range, s3.Activate ? r.RED : r.WHITE)
 
     r.EndDrawing();
 }
